@@ -1,0 +1,52 @@
+\documentclass[12pt,letterpaper,noanswers]{exam}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage[margin=0.9in]{geometry}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{multicol}
+\pagestyle{head}
+\definecolor{c03}{HTML}{FFDDDD}
+\header{AM 22b Class 22}{Updated \today.}{Skill Check Retake}
+\runningheadrule
+\headrule
+\usepackage{graphicx} % more modern
+\usepackage{amsmath} 
+\usepackage{amssymb} 
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage[numbered,autolinebreaks,useliterate]{mcode}
+
+\newcommand{\mb}[1]{\underline{#1}}
+
+\begin{document}
+ \pdfpageheight 11in 
+  \pdfpagewidth 8.5in
+
+% Name: \rule{2.5in}{0.5pt}
+% \vspace{4mm}
+
+
+\begin{questions}
+\item Based on the following code, identify (1) the rectangular box being used to enclose the region of integration, $R$, and (2) the region of integration.
+
+\begin{lstlisting}
+fc = @(x,y) x.*y;
+npoints = 100000;
+xyvals = rand(npoints,2);
+xyvals(:,1) = xyvals(:,1)*9;
+xyvals(:,2) = xyvals(:,2)*3;
+indomain = (-xyvals(:,1)+xyvals(:,2).^2)<0; %set to 1 if in domain; 0 if not
+sum(fc(xyvals(:,1),xyvals(:,2)).*indomain)*27/npoints
+\end{lstlisting}
+
+\vfill
+
+\item (parameterization of a circle). Provide a parameterization for a circle of radius $3$, centered at $(2,-5)$, and traversed clockwise.  Traverse the circle once (at a speed of your choice).
+\vfill
+
+\item (velocity) Find $\mb v(t)$ for $\mb{r}(t) = \langle e^t, 3t^4, \cos t\rangle$.
+
+\vfill
+
+\end{questions}
+
+\end{document}

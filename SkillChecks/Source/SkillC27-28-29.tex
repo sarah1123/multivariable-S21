@@ -1,0 +1,48 @@
+\documentclass[12pt,letterpaper,noanswers]{exam}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage[margin=0.9in]{geometry}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{multicol}
+\pagestyle{head}
+\definecolor{c03}{HTML}{FFDDDD}
+\header{AM 22b Class 30}{Updated \today.}{Skill Check}
+\runningheadrule
+\headrule
+\usepackage{graphicx} % more modern
+\usepackage{amsmath} 
+\usepackage{amssymb} 
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage[numbered,autolinebreaks,useliterate]{mcode}
+
+\newcommand{\mb}[1]{\underline{#1}}
+
+\begin{document}
+ \pdfpageheight 11in 
+  \pdfpagewidth 8.5in
+
+% Name: \rule{2.5in}{0.5pt}
+% \vspace{4mm}
+
+
+\begin{questions}
+\question Set up an integral to compute the flux of $\mb F = yz\mb i + xy\mb j + xy\mb k$ through $S$ where $S$ is oriented upward and is the part of the surface $z = \cos x + \sin 2y$ above the triangle in the $xy$-plane with vertices $(0,0)$, $(0,5)$, $(5,0)$.
+
+Do not integrate.
+
+\vfill
+
+\item 
+Find the flux of $\underline F = e^{y^2z^2}\mb i + (\tan(0.001x^2z^2)+y^2)\mb j + (\ln(1+x^2y^2)+z^2)\mb k$ out the surface of the closed box $0\leq x \leq 5, 0\leq y \leq 4, 0\leq z \leq 3$.
+
+\vfill
+
+\question Consider a solid region $W$ between a sphere, $S_1$, of radius $2$ and a sphere, $S_2$, of radius $5$.  (This region is shaped like the flesh of a cantaloupe or a peach, and excludes the seed part in the center).  Let $S_1$ and $S_2$ both be oriented inward.
+
+Provide an equation that relates $\displaystyle\int_{S_1}\mb F\cdot d\mb S,\int_{S_2}\mb F\cdot d\mb S,\int_{W}\nabla \cdot \mb F\ dV$.
+
+\vfill
+
+\end{questions}
+
+\end{document}

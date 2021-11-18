@@ -1,0 +1,52 @@
+\documentclass[12pt,letterpaper,noanswers]{exam}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage[margin=0.9in]{geometry}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{multicol}
+\pagestyle{head}
+\definecolor{c03}{HTML}{FFDDDD}
+\header{AM 22b Class 19}{Updated \today.}{Mar 15: Skill Check}
+\runningheadrule
+\headrule
+\usepackage{graphicx} % more modern
+\usepackage{amsmath} 
+\usepackage{amssymb} 
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage[numbered,autolinebreaks,useliterate]{mcode}
+
+\newcommand{\mb}[1]{\underline{#1}}
+
+\begin{document}
+ \pdfpageheight 11in 
+  \pdfpagewidth 8.5in
+
+% Name: \rule{2.5in}{0.5pt}
+% \vspace{4mm}
+
+
+\begin{questions}
+\item Based on the following code, identify (1) the rectangular box being used to enclose the region of integration, $R$, and (2) the region of integration.
+
+\begin{lstlisting}
+fc = @(x,y) x.*y;
+npoints = 100000;
+xyvals = rand(npoints,2);
+xyvals(:,1) = xyvals(:,1)*4-2;
+xyvals(:,2) = xyvals(:,2)*4;
+indomain = (-xyvals(:,1).^2+xyvals(:,2))>0; %set to 1 if in domain; 0 if not
+sum(fc(xyvals(:,1),xyvals(:,2)).*indomain)*16/npoints
+\end{lstlisting}
+
+\vfill
+
+\item (parameterization of a circle). Provide a parameterization for a circle of radius $7$, centered at $(-2,1)$, and traversed clockwise.  Traverse the circle once (at a speed of your choice).
+\vfill
+
+\item (velocity) Find $\mb v(t)$ for $\mb{r}(t) = \langle t^2,  \cos t, \sin t\rangle$.
+
+\vfill
+
+\end{questions}
+
+\end{document}

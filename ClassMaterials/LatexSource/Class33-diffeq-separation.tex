@@ -1,0 +1,237 @@
+\documentclass[12pt,letterpaper,noanswers]{exam}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage[margin=0.9in]{geometry}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\pagestyle{head}
+\header{AM 22b Class 33}{}{Apr 19: Differential equations, p. \thepage}
+\runningheadrule
+\headrule
+\usepackage{graphicx} % more modern
+\usepackage{amsmath} 
+\usepackage{amssymb} 
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage[utf8]{inputenc}
+\usepackage{diagbox}
+\usepackage{graphicx} 
+\usepackage{enumitem}
+\usepackage{tikz}
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black]
+
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=gray!20]
+\tikzstyle{decision} = [ellipse, minimum width=3cm, minimum height=0.5cm, text centered, draw=black, fill=white!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\usetikzlibrary{shapes.geometric, arrows}
+\pagenumbering{arabic}
+
+\usepackage[numbered,autolinebreaks,useliterate]{mcode}
+
+\newcommand{\mb}[1]{\underline{#1}}
+
+\begin{document}
+ \pdfpageheight 11in 
+  \pdfpagewidth 8.5in
+
+
+
+
+% I need to review the torus trajectories...
+
+\begin{itemize}
+\itemsep0em
+\item There is a skill check today (C30, 31, 32).
+\item There will be a skill check next Monday (C33, 34, 35).
+\item PSet 09 is due on Thursday Apr 22nd at 6pm ET.
+\item I plan to return Quiz 05 late today: Quiz 06 is on similar material (adds the divergence theorem and drops chapter 17).  It will be posted on Friday Apr 23rd.
+\item Reminder: your lowest quiz score will count only half the weight of the other quizzes.
+\item Contact me if it would be helpful to arrange alternate deadlines for PSet 09, Quiz 06, PSet 10.
+\end{itemize}
+
+\hrule
+\vspace{0.2cm}
+
+% partial derivatives, gradient
+% local linearity, differential, directional deriv
+% 2nd order partials + equations with partials
+
+\noindent\textbf{Big picture}
+
+We will learn how to analyze differential equations from three perspectives: using approximate solutions (slope fields + Euler's method + RK45), finding exact solutions (rarely, using separation of variables), using qualitative methods (identifying equilibrium solutions and whether they are `stable' or `unstable').
+
+Today we will find exact solutions by hand.
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Skill Check C33 Practice}
+
+\begin{questions}
+\item Find a family of solutions to the initial value problem $\dfrac{dx}{dt} = x^2t, x(1) = 1$.
+\end{questions}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Skill Check C33 Practice Solution}
+Separating: $\dfrac{1}{x^2} \dfrac{dx}{dt} = t$.  Integrating with respect to $t$ (and changing the variable of integration on the left hand side) $\displaystyle\int \frac{1}{x^2} dx = \int t\ dt$.  $-\dfrac{1}{x} = \frac{1}{2}t^2 + c$, so $x(t) = \dfrac{1}{t^2/2 + c}$.  $x(1) = 1$ so $\dfrac{1}{1/2 + c} = 1$.  $c = 1/2$.  We have $x(t) = \dfrac{1}{t^2/2 + 1/2}$
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Teams}
+\begin{multicols}{2}
+
+1.  student names
+\end{multicols}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+
+\noindent\textbf{Brief summary}
+\begin{tcolorbox}
+\begin{itemize}
+\itemsep0em
+    \item Differential equations can be used to model the evolution of quantities (for example, population) over time.
+    \item For the linear differential equation $\dfrac{dx}{dt} = a(x-b)$, 
+     the rate of change is proportional to the displacement of the state of the system from $b$.
+     \item Near equilibrium solutions, solutions to nonlinear, autonomous (meaning $\dfrac{dx}{dt} = f(x)$, not $f(t,x)$), differential equations approximately follow solutions to $\dfrac{dx}{dt} = \left.\frac{df}{dx}\right\vert_{x^*}(x-x^*)$, where $x(t) = x^*$ is an equilibrium solution and $\left.\frac{df}{dx}\right\vert_{x^*}, x^*$ are constants.  Solutions to $\dfrac{dx}{dt} = \left.\frac{df}{dx}\right\vert_{x^*}(x-x^*)$ display exponential growth or decay (set by the sign of $\left.\frac{df}{dx}\right\vert_{x^*}$).
+    \item Numerical approximation methods such as forward Euler can be used to approximate a single solution to an initial value problem, $\dfrac{dx}{dt} = f(t,x), x(0) = x_0$.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\eject
+
+\noindent\textbf{Exact solutions: method of separation of variables} \S 11.4
+
+\begin{tcolorbox}
+\begin{itemize}
+\itemsep0em
+    \item Given a differential equation $\dfrac{dy}{dx} = f(x,y)$, if the differential equation can be rewritten as $\dfrac{dy}{dx} = g(x)h(y)$, it is possible to attempt to use the method of \textbf{separation of variables} to find solution curves to the differential equation.
+    \item To use the method:
+    \begin{itemize}
+        \item Rearrange the equation: $\dfrac{1}{h(y)}\dfrac{dy}{dx} = g(x)$, `separating' the variables. 
+        \item Integrate the equation with respect to $x$.  $\displaystyle\int \dfrac{1}{h(y)}\dfrac{dy}{dx}dx = \int g(x)dx$.
+        \item Use $u$-substitution for the left hand side with $y = y(x)$. $dy = \frac{dy}{dx}dx$.
+        \item If possible, integrate each side of $\displaystyle\int \dfrac{1}{h(y)}dy = \int g(x)dx$.  Often, you will not be able to complete the integrals, but when you are able to, you can at least construct an implicit equation relating $y$ and $x$.
+    \end{itemize}
+    \item As a shorthand, given $\dfrac{dy}{dx} = g(x)h(y)$, the process of separation of variables is frequently written as $\dfrac{1}{h(y)}dy = g(x)dx$ (treating $dy/dx$ as a fraction).
+\end{itemize}
+\end{tcolorbox}
+
+\noindent\textbf{Example: using the method.} 
+
+Let $\dfrac{dy}{dx} = -\dfrac{x}{y}$.  Use the method of separation of variables to generate a family of solutions to this differential equation.
+
+\vspace{2in}
+
+\noindent\textbf{Example: does the method apply?}
+
+For each of the following differential equations, identify whether it is separable.
+
+\begin{enumerate}
+\itemsep2em
+    \item $y' = y$
+    \item $y' = \sin(x+y)$
+    \item $y' - xy = 0$
+    \item $y' = \frac{x+y}{x+2y}$
+    \item $y' = 2x$
+    \vspace{0.5in}
+\end{enumerate}
+
+\noindent\textbf{Example: using the method}
+
+\url{https://www.tandfonline.com/doi/pdf/10.1080/00029890.1998.12004909}
+
+Torricelli's law is a model for how fluid drains from a hole.  $v = \sqrt{2gy}$ where $v$ is the velocity of the fluid, $g$ is the gravitation constant, and $y$ is the height of fluid above the hole.  \emph{Evidently, before Torricelli, it was thought that $v \propto h$.}
+
+Assume of the effective area of the hole is $a$, so $\frac{dV}{dt} = -a\sqrt{2gy}$ where $V$ is the volume of the container that has a hole.
+
+Assume the container has cylindrical walls, so $V = Ay$ where $A$ is the cross-sectional area.  We have $\dfrac{dy}{dt} = -k\sqrt{y}$ where $k = a\sqrt{2g}/A$.
+\begin{enumerate}
+    \item Find a solution to the initial value problem $\dfrac{dy}{dt} = -k\sqrt{y}, y(0) = y_0>0$.
+    \vspace{2in}
+    
+    \item Identify a range of time over which your solution makes sense.
+    \vspace{2in}
+    
+    \item Consider $y_0 = 0$, so the container is empty at time $0$.  Find a solution where the container emptied at time $t = -1$, one where it emptied at time $0$, and one where it was empty for all time.
+    \vspace{2.5in}
+\end{enumerate}
+
+\eject
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+
+\noindent\textbf{Existence and uniqueness of solutions (a comment)}
+\begin{tcolorbox}
+\begin{itemize}
+\itemsep0em
+\item The solution to an equation or system of equations is called \textbf{unique} when there is only one solution.  Other possibilities are that there are multiple solutions or no solutions.  \emph{Identifying when systems of linear equations have no solution, one solution, or multiple solutions is a central topic in linear algebra.}
+\item An \textbf{existence} and \textbf{uniqueness} theorem for solutions to an initial value problem $\dfrac{dx}{dt} = f(x), x(0) = x_0$ was proven in the 1890s (Picard-Lindelöf theorem).  Existence of a solution (on a finite time interval) can be guaranteed when $f$ is a continuous function (you can draw it without lifting your pen).  Uniqueness requires an additional condition on how $f$ changes with a change in $x$.  When $\frac{df}{dx}$ is continuous as well, there is a unique solution (this condition is tighter than necessary but is sufficient).  
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+% \noindent\textbf{Exact solutions: using an integrating factor}
+% \begin{tcolorbox}
+% \begin{itemize}
+%     \item For a linear first order differential equation of the form $\dfrac{dx}{dt} + p(t)x = g(t)$, with $p$ and $g$ continuous:
+%     \begin{itemize}
+%         \item Let $\mu(t)$ be an \textbf{integrating factor}.  Write $\mu(t)\dfrac{dx}{dt} + \mu(t)p(t)y = \mu(t)g(t)$.
+%         \item Assume that $\mu(t)$ is chosen so that $\mu(t)p(t) = \frac{d\mu}{dt}$, so we have $\mu\dfrac{dx}{dt} + \dfrac{d\mu}{dt}x = \mu(t)g(t)$.
+%         \item Using the product rule: $\dfrac{d}{dt}(\mu x) = \mu(t)g(t)$, so $x =\left(\int \mu g dt + c\right)/\mu$.
+%     \end{itemize}
+%     \item To find $\mu$, we have $\frac{d\mu}{dt} = \mu p(t)$, a separable differential equation.
+% \end{itemize}
+% \end{tcolorbox}
+
+
+% \noindent\textbf{Example: using the method.}
+
+% Find a solution to $\dfrac{dx}{dt} = b - a x$ using
+% \begin{enumerate}
+%     \item an integrating factor.
+%     \vspace{1.8in}
+%     \item By separation of variables.
+%     \vspace{1in}
+% \end{enumerate}
+
+% \vspace{0.2cm}
+% \hrule
+% \vspace{0.2cm}
+
+
+% \noindent\textbf{Problem.}  Consider the initial value problem with the logistic differential equation, $\dfrac{dx}{dt} = ax(1-x/k), x(0) = k/2$.
+% \begin{enumerate}
+%     \item Find a solution to this differential equation.
+%     \vspace{2.5in}
+    
+%     \item By taking a limit, identify the long term behavior of your solution as $t\rightarrow \infty$.  In addition, identify the negative time behavior as $t\rightarrow -\infty$.
+% \end{enumerate}
+
+% \vfill
+
+% \vspace{0.2cm}
+% \hrule
+% \vspace{0.2cm}
+
+
+
+\end{document}

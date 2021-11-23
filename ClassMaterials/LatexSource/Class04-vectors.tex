@@ -1,0 +1,355 @@
+\documentclass[12pt,letterpaper,noanswers]{exam}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage[margin=0.9in]{geometry}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\pagestyle{head}
+\definecolor{c03}{HTML}{FFDDDD}
+\header{AM 22b Class 04}{}{Feb 01: vector products}
+\runningheadrule
+\headrule
+\usepackage{graphicx} % more modern
+\usepackage{amsmath} 
+\usepackage{amssymb} 
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+
+\usepackage[numbered,autolinebreaks,useliterate]{mcode}
+
+\newcommand{\mb}[1]{\underline{#1}}
+
+\begin{document}
+ \pdfpageheight 11in 
+  \pdfpagewidth 8.5in
+
+
+% I need to review the torus trajectories...
+
+\begin{itemize}
+% \item There is a pre-class assignment (20 minutes of videos + a few WeBWorK exercises) due at 10am this Monday.  It is available on Canvas.
+\itemsep0em
+    \item Problem set 01 is due on Thursday Feb 4th at 10am.  I have office hours today from 3-4pm in Zoom.  Post to Slack if you'll be attending.  See Canvas for more office hours info and the link.
+    \item There is a skill check today.  Find it on Gradescope and submit it there.
+    \item There is no class on Friday (wellness day).
+    \item There is a skill check on Monday Feb 8th for classes C04 and C05.  The sample problem for C04 is in this handout.
+\end{itemize}
+
+\hrule
+\vspace{0.2cm}
+
+
+
+\noindent\textbf{Big picture}
+
+This week we will work with vectors, with a focus on moving between the algebraic and geometric definitions of the dot product and the cross product.  We will also look briefly at the determinant of a matrix.  These vector products will become very important in March: we'll be using them all of the time once we start working with functions that have vectors for their output.
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Skill Check C04 practice}
+
+Rewrite the equation of the plane
+\[3x -5y +2z = 10 \]
+\begin{itemize}
+\itemsep0em
+    \item in intercept form.
+    \item using a dot product between a normal vector and a vector parallel to the plane.
+\end{itemize}
+
+\vspace{0.2cm}
+
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Skill Check C04 solution}
+
+For intercept form, I want $x/a + y/b + z/c = 1$ where $a, b, c$ are the axis intercepts of the plane.
+
+Option 1: I'll divide by $10$ to make the right hand side $1$.  I have $3x/10 - y/2 + z/5 = 1$.  Rearranging, this is $\dfrac{x}{10/3} + y/(-2) + z/5 = 1$.
+
+Option 2: I'll find the intercepts.  At $(a,0,0)$ we have $3a = 10$, so $a = 10/3$.  At $(0,b,0)$ we have $-5b = 10$ so $b = -2$.  At $(0,0,c)$ we have $2c = 10$ so $c=5$.  In intercept form the plane is \[\frac{x}{10/3}+\frac{y}{-2}+\frac{z}{5} = 1.\]
+
+For the dot product, I can ``read'' the normal vector off of the plan equation.  It is $\langle 3,-5,2\rangle$.  To form a vector parallel to the plane, I use $(x,y,z) - (x_0,y_0,z_0)$, where $(x,y,z)$ is a variable point in the plane and $(x_0,y_0,z_0)$ needs to be a specific point in the plane.  The equation of the plane will be $\langle 3,-5,2\rangle \cdot \langle x-x_0,y-y_0,z-z_0\rangle = 0$, where $(x_0,y_0,z_0)$ is a point on the plane.  From the intercept form, we know that $(0,0,5)$ is a point on the plane, so one way to write the equation of the plane is
+\[\langle 3,-5,2\rangle \cdot \langle x,y,z-5\rangle = 0.\] Of course, 
+$\langle 3,-5,2\rangle \cdot \langle x,y+2,z\rangle = 0$ works as well.  As do many other options.  (So long as the point $(x_0,y_0,z_0)$ satisfies $3x_0 - 5y_0 +2z_0 - 10 = 0$, we will end up with a plane equation equivalent to $3x-5y+2z=10$.)
+
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\eject
+
+\noindent\textbf{Matlab code example 1}
+\begin{lstlisting}
+%% what proportion of the output is between 30 and 40
+% for the x-range and y-range selected?
+f1 = @(x,y) y.*x.^2;
+[x1,y1] = meshgrid(0:0.2:5,0:0.1:2);
+zval = f1(x1,y1);
+contour(x1,y1,zval)
+colorbar
+sz = size(zval);
+pixelcount = sz(1)*sz(2);
+figure
+imagesc(zval<40 & zval>30)
+z30to40 = (zval>30 & zval<40);
+proportion = sum(sum(z30to40))/pixelcount
+\end{lstlisting}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Pre-class Assignment follow up}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Dot product knowledge}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Skill check}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+
+
+\noindent\textbf{Mathematical properties} (included for completeness)
+\begin{tcolorbox}
+Vector addition and subtraction have some important mathematical properties:
+\begin{enumerate}
+\itemsep0em
+    \item Vector addition is \textbf{associative}: $\vec u + (\vec v + \vec w) = (\vec u + \vec v) + \vec w.$
+    \item There is an \textbf{additive identity}: $\vec u + \vec 0 = \vec u.$
+    \item There is an \textbf{additive inverse}: $\vec v + -\vec v = \vec 0$ where $-\vec v = (-1)\vec v.$
+    \item Vector addition is \textbf{commutative}: $\vec v + \vec w = \vec w + \vec v$.
+\end{enumerate}
+Scalar multiplication with vectors has important properties as well:
+\begin{enumerate}
+\itemsep0em
+    \item \textbf{Distributivity} of scalar multiplication with respect to vector addition $(\alpha + \beta)\vec v = \alpha\vec v + \beta \vec v.$
+    \item \textbf{Distributivity} of scalar multiplication with respect to vector addition
+    $\alpha(\vec v + \vec w) = \alpha\vec v + \alpha \vec w.$
+    \item \textbf{Compatibility} of scalar multiplication with usual multiplication $\alpha(\beta\vec v) = (\alpha\beta)\vec v$
+    \item \textbf{Identity} element of scalar multiplication: $1\vec v = \vec v$
+\end{enumerate}
+These properties are the properties of a mathematical object called a \emph{vector space}.  You studied vector spaces as mathematical objects last semester.
+\end{tcolorbox}
+
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\eject
+
+\noindent\textbf{Basis vectors}
+\begin{tcolorbox}
+In $3$-space, we'll use the \textbf{standard basis vectors} $\mb{i} = \left(\begin{array}{c} 1 \\ 0 \\0 \end{array}\right) = \mb{e}_1,$ $\mb{j} = \left(\begin{array}{c} 0 \\ 1 \\0 \end{array}\right)= \mb{e}_2,$ $\mb{k} = \left(\begin{array}{c} 0 \\ 0 \\ 1 \end{array}\right)= \mb{e}_3$.
+
+In $n$-space, the vectors $\mb{e}_1,\mb{e}_2,...,\mb{e}_k$ are assumed to have $n$-components and are used to denote the standard basis vectors for that space.
+\end{tcolorbox}
+
+\noindent\textbf{Example}
+
+$\left(\begin{array}{c} 2 \\ 5 \\ 1 \end{array}\right) = 2\mb{e}_1+5\mb{e}_2 + \mb{e}_3 = 2\mb{i}+5\mb{j}+\mb{k}.$
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Teams}
+
+You will work with the same team as last time on the in-class activity today.  
+\begin{multicols}{2}
+
+1.  student names
+
+\end{multicols}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Relative motion}
+
+\begin{tcolorbox}
+\textbf{Velocity}, \textbf{acceleration}, and \textbf{force} are each quantities that have a magnitude and a direction, so are well represented by vectors.  
+
+For a velocity vector, we refer to its magnitude as the \textbf{speed}.  For acceleration and force vectors we don't have special words to denote the size of the acceleration/force.
+
+\textbf{Relative motion}: If an object is moving at velocity $\mb{v}$ relative to a river, and the river is moving at velocity $\mb{w}$ relative to the shore, then the object will be moving at velocity $\mb{v} + \mb{w}$ relative to the shore.
+\end{tcolorbox}
+
+\noindent\textbf{Example.}  
+
+A boat is heading due east relative to the water at $25$ km/hr.  The current in the water is moving southwest at $10$ km/hr.  We want to understand the motion of the boat relative to the ground.
+
+\begin{itemize}
+\item Draw this scenario out using vectors.
+\vspace{2.5cm}
+
+% \item Find an expression for the speed of the boat relative to the ground.
+% \vspace{1.5cm}
+
+% \item Find an expression for the angle that the boat is traveling relative to due east.
+\vspace{1.5cm}
+
+\end{itemize}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Dot product} \S 13.3
+\begin{tcolorbox}
+The \textbf{dot product} between two vectors of the same size, $\underline{u}$ and $\underline{v}$, is given by $\underline{u}\cdot\underline{v} = u_1v_1+u_2v_2+...+u_nv_n$ where $\underline{u} = (u_1, u_2,...,u_n)^T$ and $\underline{v} = (v_1, v_2, ..., v_n)^T$.  This is the \textbf{algebraic definition} of the dot product.
+
+The \textbf{angle} between the vectors $\underline{u}$ and $\underline{v}$ can be found using the relationship 
+$\underline{u}\cdot\underline{v} = \Vert \underline{u}\Vert\Vert\underline{v}\Vert\cos\theta$.  This is the \textbf{geometric definition} of the dot product.
+\end{tcolorbox}
+\begin{tcolorbox}
+The dot product is \textbf{commutative}: $\underline{u}\cdot\underline{v} =\underline{v}\cdot\underline{u}.$
+
+The dot product \textbf{distributes} over vector addition: : $\underline{u}\cdot(\underline{v}+\underline{w}) =\underline{u}\cdot\underline{v}+\underline{u}\cdot\underline{w}.$
+
+Taking a \textbf{scalar multiple} of the dot product is equivalent to rescaling either of the vectors by that scalar: $c(\mb{u}\cdot\mb{v}) = (c\mb{u})\cdot\mb{v} = \mb{u}\cdot(c\mb{v})$.
+
+The dot product of a vector with itself is the \textbf{square of its length}: $\underline{u}\cdot\underline{u} =\Vert \underline{u} \Vert^2$.
+
+\end{tcolorbox}
+
+\noindent\textbf{Examples}.
+
+Show that the algebraic and geometric definitions give the same answer for 
+\begin{itemize}
+    \item the dot product $\mb{i} \cdot \mb{j}$,
+    \vspace{1cm}
+    
+    \item and for the dot product $\langle\, 1, 1\,\rangle \cdot \langle\, 0, 3 \,\rangle$.
+    \vspace{1cm}
+    
+%    \item Use scalar multiplication and the distributive property along with the geometric definition of the dot product to reproduce the algebraic definition for $(u_1\mb{i}+u_2\mb{j})\cdot(v_1\mb{i}+v_2\mb{j}).$  \emph{Show all of the steps of this process, using the distributive property and the scalar multiplication facts in separate steps}.
+    \vspace{2cm}
+\end{itemize} 
+
+\noindent \textbf{Q}: Why do the geometric and algebraic definitions give the same result?  
+
+\noindent\textbf{A}: There is an argument presented in section 13.3 of the textbook if you are interested.  
+
+
+\begin{itemize}
+    \item Combine the two definitions of the dot product to find the cosine of the angle between $\mb{v} = \langle\, 3,4,5\,\rangle$ and $\mb{w} = \langle\, 1,0,1 \,\rangle$.
+    \vspace{2cm}
+    
+    \item Use the geometric definition to show that two (non-trivial) vectors $\mb{v}$ and $\mb{w}$ are perpendicular if, and only if, their dot product is zero.  \emph{Show each direction explicitly}.
+    \vspace{3cm}
+    
+    \item Find a value $c$ so that $\langle\, 3,4,5 \,\rangle$ is perpendicular to $\langle\, 4, 2, c \,\rangle$.
+    \vspace{2cm}
+\end{itemize}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Implicit equation of a (hyper)plane}
+
+\begin{tcolorbox}
+A \textbf{hyperplane} passing through point $\mb{x_0}$ and orthogonal to a vector $\mb{n}$ is the set of solutions to the equation $(\mb{x}-\mb{x_0})\cdot\mb{n} = 0$.
+\end{tcolorbox}
+
+\noindent\textbf{Examples}.
+
+\begin{itemize}
+\itemsep0em
+    \item $y = mx + b$ becomes $\left(\mb{x}-\left(\begin{array}{c}0 \\ b\end{array}\right)\right)\cdot \left(\begin{array}{c}m \\ -1\end{array}\right) = 0$
+    \item $m(x-x_0)+n(y-y_0) = 0$ becomes $\left(\mb{x}-\left(\begin{array}{c}x_0 \\ y_0\end{array}\right)\right)\cdot \left(\begin{array}{c}m \\ n\end{array}\right) = 0$
+    \item $x/a + y/b = 1$ becomes $\left(\mb{x}-\left(\begin{array}{c}0 \\ b\end{array}\right)\right)\cdot \left(\begin{array}{c}1/a \\ 1/b\end{array}\right) = 0$
+%    \item $z = mx + ny + b$ becomes $\left(\mb{x}-\left(\begin{array}{c}0 \\ 0 \\ -b\end{array}\right)\right)\cdot \left(\begin{array}{c}m \\ n \\ -1\end{array}\right) = 0$
+\item $n_x(x-x_0)+n_y(y-y_0) +n_z(z-z_0)= 0$ becomes $\left(\mb{x}-\left(\begin{array}{c}x_0 \\ y_0 \\ z_0 \end{array}\right)\right)\cdot \left(\begin{array}{c}n_x \\ n_y \\ n_z\end{array}\right) = 0$
+\item $x/a + y/b + z/c = 1$ becomes $\left(\underline{x}-\left(\begin{array}{c}0 \\ 0 \\ c\end{array}\right)\right)\cdot \left(\begin{array}{c}1/a \\ 1/b \\ 1/c \end{array}\right) = 0$
+\end{itemize}
+
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+\begin{itemize}
+\item Find a normal vector to the plane $x + 2y - z = 2.$
+\vspace{0.5cm}
+\item Find a vector perpendicular to the plane $z = 2x + 3y.$
+\vspace{1cm}
+\end{itemize}
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Projected length}
+\begin{tcolorbox}
+Taking a dot product of a vector, $\mb{v}$, with a unit vector, $\hat{\mb{u}}$, gives the \textbf{oriented, projected length} of $\mb{v}$ along the ``\mb{u}-axis''.  \url{https://www.youtube.com/watch?v=LxSMhIUaIc4}
+\end{tcolorbox}
+
+\noindent\textbf{Example.}
+\begin{itemize}
+\item Let $\mb{v} = 3\mb{i} + 4\mb{j}$ and $\mb{F} = 4\mb{i} + \mb{j}.$  Find the oriented, projected length, of $\mb{F}$ along the direction of $\mb{v}$.
+\vspace{3cm}
+
+\item Construct a vector $\vec F_{\text{parallel}}$ that is parallel to $\vec{v}$, and has its length given by the oriented, projected length, of $\mb{F}$ along the direction of $\mb{v}$.
+\vspace{2cm}
+\end{itemize}
+
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+\noindent\textbf{Matlab code example 2}
+\begin{lstlisting}
+%% Dot product
+vecu = [4,0,-6]; 
+vecv = [-1,1,1];
+% dot product
+dot(vecu,vecv)
+% Using a loop:
+dotout = 0;
+for k1 = 1:length(vecu)
+    dotout = dotout+vecu(k1)*vecv(k1);
+end
+
+%% Plane equation
+% Set up the left hand side of an implicit equation for the plane
+% through pt (0,1,2) with normal vector <2,5,4>,
+% Setting the left hand side equal to zero defines the plane.
+pt = [0,1,2];
+vecn = [2, 5, 4];
+syms x y z
+g = @(x,y,z) dot(vecn, [x,y,z]-pt)
+\end{lstlisting}
+
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+
+
+
+
+\end{document}

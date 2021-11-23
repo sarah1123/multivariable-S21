@@ -1,0 +1,261 @@
+\documentclass[12pt,letterpaper,noanswers]{exam}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage[margin=0.9in]{geometry}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\pagestyle{head}
+\definecolor{c03}{HTML}{FFDDDD}
+\header{AM 22b Class 22}{}{Mar 22: Line integral}
+\runningheadrule
+\headrule
+\usepackage{graphicx} % more modern
+\usepackage{amsmath} 
+\usepackage{amssymb} 
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage[utf8]{inputenc}
+\pagenumbering{arabic}
+
+\usepackage[numbered,autolinebreaks,useliterate]{mcode}
+
+\newcommand{\mb}[1]{\underline{#1}}
+
+\begin{document}
+ \pdfpageheight 11in 
+  \pdfpagewidth 8.5in
+
+
+
+
+% I need to review the torus trajectories...
+
+\begin{itemize}
+% \item There is a pre-class assignment (20 minutes of videos + a few WeBWorK exercises) due at 10am this Monday.  It is available on Canvas.
+\itemsep0em
+\item There is a skill check today.  It is on Gradescope.
+\item The next skill check will be on Monday March 29th (see handouts C22, C23, C24 for sample questions).
+\item Problem set 06 is due on Thursday March 25th.
+\item A few quizzes had decimal expressions on them (for a square root, for instance).  I know you may have these memorized; if you did use a calculating tool, though, please reach out to me via DM on Slack.
+\item OH are Mon, Tues, Wed this week.
+\end{itemize}
+
+\hrule
+\vspace{0.2cm}
+
+% partial derivatives, gradient
+% local linearity, differential, directional deriv
+% 2nd order partials + equations with partials
+
+\noindent\textbf{Big picture}
+
+In our last class, we worked to identify the sign of a line integral based on an image of the vector field and a path.  These integrals are used to compute work done by a force vector field along a path, or to compute the circulation of a velocity vector field about a closed curve.  Today we will set up and compute line integrals analytically. 
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+\noindent\textbf{Skill Check C22 Practice}
+\begin{questions}
+\question Find $\displaystyle\int_C \mb F\cdot d\mb r$ for $\mb F = x^3\mb i + y^2\mb j + z\mb k$ and $C$ the line from the origin to the point $(2,3,4)$.
+
+% \begin{oneparcheckboxes}
+% \choice positive
+% \choice negative
+% \choice zero
+% \end{oneparcheckboxes}
+\end{questions}
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+
+\noindent\textbf{Skill Check C22 Practice Solution}
+\begin{questions}
+\question 
+ Parameterizing a line segment.  I'll use $0\leq t \leq 1$.  So $x(t) = 2t$, $y(t) = 3t$, $z(t) = 4t$.
+
+\begin{align*}
+\int_C \mb F \cdot \mb r &= \int_0^1 \langle (2t)^3, (3t)^2, (4t)\rangle \cdot \langle 2,3,4\rangle dt \\
+&= \int_0^1 16t^3 + 27t^2 + 16t\ dt \\
+& = \left. 4t^4 + 9t^3 + 8t^2 \right\vert_0^1 \\
+& = 4 + 9 + 8 \\
+&= 21.
+\end{align*}
+
+\end{questions}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Teams}
+New teams today: introduce yourself to your team.  Share your name, year, house, and concentration (or one you're considering).
+
+\begin{multicols}{2}
+
+1.  student names
+\end{multicols}
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+
+
+\eject
+
+
+
+\noindent\textbf{Line integrals: work or circulation (vector field along the curve)} \S 18.2
+\begin{tcolorbox}
+\begin{itemize}
+\itemsep0em
+    \item We use a parameterization of the oriented curve $C$ to \textbf{evaluate a line integral}: $\int_C \mb F \cdot \mb T\ ds = \int_a^b \mb F(\mb r(t))\cdot \frac{d\mb r}{dt}\ dt$ where $\mb r(t), a \leq t\leq b$ is a parameterization of the curve $C$.
+    \item \textbf{Differential} notation is very often used for the line integral.  For the vector field $\mb F = P\mb i + Q\mb j + R\mb k$, and the oriented curve $C$, $d\mb r = dx\mb i + dy\mb j + dz\mb k$, so $\displaystyle\int_C \mb F\cdot d\mb r = \int_C Pdx + Qdy + Rdz$.  For $\mb r(t), a\leq t\leq b$, \[\int_C Pdx + Qdy + Rdz = \int_a^b P(\mb r(t))\frac{dx}{dt}dt +Q(\mb r(t))\frac{dy}{dt}dt + R(\mb r(t))\frac{dz}{dt}dt.\]
+    \item The value of a given line integral is \textbf{independent of parameterization}, meaning that any parameterization of a given oriented curve would yield the same result for the line integral.
+\end{itemize}
+
+
+
+
+\end{tcolorbox}
+
+
+\noindent\textbf{Example (setting up the integral)}
+
+Let $\mb F = y\mb i + x\mb j$.  Let $C$ be the semicircle from $(0,1)$ to $(0,-1)$ with $x>0$.  Write $\displaystyle\int_C \mb F\cdot d\mb r$ in the form $\displaystyle\int_a^b g(t)dt$.
+%\emph{pollQ}
+\vspace{1in}
+
+
+
+
+\noindent\textbf{Example (computing a line integral)}
+
+Find $\displaystyle\int_C \langle 2y^2,x\rangle\cdot d\mb r$ where $C$ is the line segment from $(3,1)$ to $(0,0)$.
+%\emph{pollQ}
+\vspace{1.5in}
+
+
+ 
+%  \noindent\textbf{Example (computing a circulation)}.  
+ 
+%  Let $C$ be the triangle with vertices $(0,0)$, $(3,0)$, $(3,2)$ traversed counterclockwise (in the \emph{positive} direction).  Let $\mb F = (2x-y+4)\mb i + (5y+3x-6)\mb j$.  Find $\displaystyle\oint_C \mb F \cdot d\mb r$, the circulation of $\mb F$ on $C$.
+
+% \noindent Procedure for finding this line integral:
+% \begin{enumerate}
+% \item Split $C$ into three oriented line segments, $C = C_1+C_2+C_3$.
+% \item For each line segment, follow the steps below.
+% \begin{enumerate}
+% \itemsep5em
+% \item Parameterize the segment $C_i$ ($x_i(t), y_i(t), a_i\leq t\leq b_i$).
+% \item Given $x_i(t)$ and $y_i(t)$, plug in to $\mb F(x,y)$ to find $\mb F(x_i(t), y_i(t))$ along the line segment.
+% \item Compute $\frac{d\mb r_i}{dt}$ for that segment.
+% \item Find $g_i(t) = \mb F(x_i(t),y_i(t))\cdot \frac{d\mb r_i}{dt}$.
+% \item Compute $\displaystyle\int_{C_i} \mb F\cdot d\mb r = \int_{a_i}^{b_i} g_i(t) dt$.
+% \vspace{1in}
+% \emph{pollQ}
+% \end{enumerate}
+% \item Find $\displaystyle\oint_C  \mb F\cdot d\mb r$ by taking the sum $\displaystyle\int_{C_1} \mb F\cdot d\mb r+\int_{C_2} \mb F\cdot d\mb r+\int_{C_3} \mb F\cdot d\mb r$
+% \vspace{1in}
+% \end{enumerate}
+
+ 
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+ 
+\noindent\textbf{Example (differential notation)}.  Find $\mb F$ so that the line integral $\int_C (x+2y)dx + x^2ydy$ can be written $\int_C \mb F\cdot d\mb r$.
+
+%\emph{pollQ}
+ \vspace{1in}
+ 
+ % \eject
+ 
+ 
+  
+
+ 
+ \noindent\textbf{Question (comparing line integrals)} Let $C_1$ be parameterized by $\mb r_1(t) = (\cos t,\sin t), 0\leq t\leq 2\pi$, $C_2$ be parameterized by $\mb r_2(t) = (2\cos t,2\sin t), 0\leq t\leq 2\pi$.  Let $\mb F$ be a vector field.  Is it always true that $\displaystyle\int_{C_2} \mb F\cdot d\mb r = 2\int_{C_1}\mb F\cdot d\mb r$? 
+ 
+ %\emph{pollQ}
+
+\vspace{1in}
+
+\noindent\textbf{Question (comparing line integrals)} Let $C_1$ be parameterized by $\mb r_1(t) = (\cos t,\sin t), 0\leq t\leq 2\pi$, $C_2$ be parameterized by $\mb r_2(t) = (\cos 2t,\sin 2t), 0\leq t\leq 2\pi$.  Let $\mb F$ be a vector field.  Is it always true that $\displaystyle\int_{C_2} \mb F\cdot d\mb r = 2\int_{C_1}\mb F\cdot d\mb r$? 
+
+% \emph{pollQ}
+\vspace{1in}
+
+\noindent\textbf{Problem (reasoning about a line integral)}.  Let $C$ be $\mb r = (2t-1)\mb i + (t-2)\mb j + t^3\mb k$ for $0\leq t\leq 1$.  Assume $\int_C \mb F(\mb r)\cdot d\mb r = 10$.
+ 
+ Find the value of the integral $\displaystyle\int_1^0 \mb F\left(2t-1, t-2, t^3\right)\cdot (2\mb i + \mb j +3t^2\mb k)dt$. 
+ 
+% \emph{pollQ}
+ 
+ \vspace{1.5in}
+ 
+ 
+
+
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Single variable calculus: fundamental theorem of calculus}. \S 5.3
+\begin{tcolorbox}
+\begin{itemize}
+\itemsep0em
+    \item Let $F(x) = \frac{df}{dx}$ on $[a,b]$.  Then $\displaystyle\int_a^b F(x)\ dx = f(b) - f(a)$ by a fundamental theorem of calculus.
+    \item Here's some intuition for this: we have $\displaystyle\int_a^b F(x) \ dx = \int_a^b \frac{df}{dx} \ dx$.  The corresponding Riemann sum is $\displaystyle\sum \Delta f \approx \sum \frac{df}{dx}\Delta x$.  Let $u = f(x)$.  $du = \frac{df}{dx}dx$.  Doing a change of variables, $\displaystyle\int_a^b \frac{df}{dx}dx = \int_{f(a)}^{f(b)} du =  \left.f\right\vert_{f(a)}^{f(b)}.$. \emph{Notice that the limits of the integral change when we do the change of variables.}
+\end{itemize}
+\end{tcolorbox}
+
+\noindent\textbf{Example}.
+
+Let $f(x) = x^3 + x$.  Differentiate $f(x)$.  Use the fundamental theorem of calculus to find $\displaystyle\int_0^2 \left(3x^2 + 1\right)\ dx$.
+
+\vspace{1in}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Question}.
+
+How might you generalize the fundamental theorem of calculus to an integral along a path in 3-space?
+
+% \noindent\textbf{Example}.
+
+% Water leaks out of a tank at a rate of $R(t)$ gallons per hour, where $t$ is measured in hours.  Write a definite integral that expresses the total amount of water that leaks out of the tank in the first two hours.
+
+% \vspace{1in}
+
+% \noindent\textbf{Example}.
+
+
+% This is an excerpt from a May 2, 2010 new article (see section 5.3 Q 49-51 in our text).  ``The crisis began around 10am yesterday when a 10-foot wide pipe in Weston sprang a leak, which worsened throughout the afternoon and eventually cut off Greater Boston from the Quabbin Reservoir, where most of its water supply is stored... Before water was shut off to the ruptured pipe [at 6:40 pm], brown water had been roaring from a massive crater [at a rate of] 8 million gallons an hour rushing into the nearby Charles River.''
+
+% Let $r(t)$ be the rate in gallons per hour that water flowed from the pipe $t$ hours after it sprang its leak.
+
+% Which is larger: $\displaystyle\int_0^2 r(t)dt$ or $\displaystyle\int_2^4 r(t)dt$?
+
+
+% \eject 
+
+
+
+
+
+
+
+
+
+\end{document}

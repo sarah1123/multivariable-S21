@@ -1,0 +1,281 @@
+\documentclass[12pt,letterpaper,noanswers]{exam}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage[margin=0.9in]{geometry}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\pagestyle{head}
+\definecolor{c03}{HTML}{FFDDDD}
+\header{AM 22b Class 08}{}{Feb 12: local linearity, differential, chain rule}
+\runningheadrule
+\headrule
+\usepackage{graphicx} % more modern
+\usepackage{amsmath} 
+\usepackage{amssymb} 
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+
+\usepackage[numbered,autolinebreaks,useliterate]{mcode}
+
+\newcommand{\mb}[1]{\underline{#1}}
+
+\begin{document}
+ \pdfpageheight 11in 
+  \pdfpagewidth 8.5in
+
+
+
+
+% I need to review the torus trajectories...
+
+\begin{itemize}
+% \item There is a pre-class assignment (20 minutes of videos + a few WeBWorK exercises) due at 10am this Monday.  It is available on Canvas.
+\itemsep0em
+\item There is not a problem set due next week.
+\item There is no class on Monday (university holiday).
+\item There is a self-scheduled quiz next week (C01-C06, pset 01-02, \S 12 and \S 13 in Hughes-Hallett).  It will be available on Gradescope from Friday Feb 19th until Sunday Feb 21st at 6pm ET.
+\end{itemize}
+
+\hrule
+\vspace{0.2cm}
+
+% partial derivatives, gradient
+% local linearity, differential, directional deriv
+% 2nd order partials + equations with partials
+
+\noindent\textbf{Big picture}
+
+Today our focus is on linear approximation and rates of change in the case of function composition (chain rule).  
+
+Approximating nonlinear functions by linear ones is often used to simplify models or calculations.  Ex: $\sin x \approx x$ for $x$ near $0$ is the `small angle' approximation for sine.
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+\noindent\textbf{Skill Check C08 practice}
+
+ Find the equation of a tangent plane to $x^2 +y^2 - z = 1$ at the point $(1,3,9)$.
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Skill Check C08 Solution}
+
+$x^2 + y^2 - z = 1$ is of the form $F(x,y,z) = c$.
+
+\begin{itemize}
+    \item Option 1: rewrite this as $z = f(x,y)$, with the tangent plane calculated at $(1,3)$. I have $z = x^2+y^2 -1$.  
+    
+    The tangent plane is $z = f(1,3) + \left. f_x\right\vert_{(1,3)}(x-1) + + \left. f_y\right\vert_{(1,3)}(y-3)$.
+    
+    $f_x = 2x$, $f_y = 2y$.  The tangent plane is
+    \[z = 9 + 2(x-1) + 6(y-3)\]
+    \item Option 2: $F = x^2 + y^2 - z$, so $[DF] = (2x, 2y, -1)$.  The function has a single output, so the gradient is defined and it is $\mb{\nabla}F = (2x, 2y, -1)^T$.  
+    
+    The gradient vector evaluated at a point on the surface is normal to the tangent plane of $F(x,y,z) = c$ at that point.
+    
+    At $(1,3,9)$, $\left.\mb{\nabla}F\right\vert_{(1,3,9)} = (2, 6, -1)^T$ is a vector normal to the tangent plane and $(1,3,9)$ is a point on the plane.
+    
+    \[2(x-1) + 6(y-3) + -1(z-9) = 0\] is an equation for the tangent plane.
+\end{itemize}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+
+\noindent\textbf{Teams}
+
+Today's icebreaker: share with your group a food that you enjoy.
+
+\begin{multicols}{2}
+1.  student names
+
+
+\end{multicols}
+
+%\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+
+\noindent\textbf{Linear approximation: single variable}
+\begin{tcolorbox}
+\begin{itemize}
+\itemsep0em
+    \item Assuming $f(x)$ is differentiable at $a$, the \textbf{tangent line} to the curve $y=f(x)$ at $a$ is a line that passes through the point $(a,f(a))$ with the same slope as the curve at that point.
+\item The \textbf{Taylor series to first order} of $f(x)$ about the point $a$ is $f(a) + f_x(a)(x-a).$  We can use this Taylor series to construct a \textbf{linear approximation} to $f(x)$ at $a$: $f(x) \approx f(a) + f_x(a)(x-a)$.
+\item The linear approximation is often written using the following notation: let $\Delta x = x - a$ and $\Delta f = f(x) - f(a)$.  We have $\Delta f \approx f_x(a) \Delta x$ from the linear approximation.
+\end{itemize}
+\end{tcolorbox}
+\begin{enumerate}
+    \item Construct a linear approximation to the function $f(x) = x^2$ at the point $x=3$.
+\vspace{1in}
+
+\item Find a vector perpendicular to your linear equation.
+\vspace{1in}
+
+\item For the differentiable function $h(x)$, we are told that $h(600) = 300$ and $h_x(600) = 12.$  Use a linear approximation to estimate $h(602)$.
+\vspace{0.5in}
+
+\item For the (unknown) function $h(x)$ above, approximate the change in $h(600)$ when $x$ increases by $2$.
+\vspace{0.5in}
+
+\end{enumerate}
+
+
+
+\begin{tcolorbox}
+\begin{itemize}
+\itemsep0em
+\item The \textbf{differential} $df$ at a point $a$ is the linear function of $dx$ given by the formula $df = f_x(a) dx$.  The differential at a general point is written $df = f_xdx.$  The expression for the differential is very similar to the linear approximation formula.  We mainly encounter this form when doing a change of variables in an integral:  $du = \frac{du}{dx}dx$ for a $u$-substitution.
+\end{itemize}
+\end{tcolorbox}
+
+
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Linear approximation: functions of two variables} \S 14.3
+\begin{tcolorbox}
+\begin{itemize}
+\itemsep0em
+    \item Assuming $f(x,y)$ is differentiable at $(a,b)$, the \textbf{tangent plane} to the surface $z=f(x,y)$ at $(a,b)$ is a plane that passes through the point $(a,b,f(a,b))$ and has the same partial derivatives as the surface at that point.  This plane is given by $z = f(a,b) + f_x(a,b)(x-a) + f_y(a,b)(y-b)$.
+    \end{itemize}
+
+    \end{tcolorbox}
+
+Construct a tangent plane to the function $f(x,y) = x^2y$ at the point $(3,1)$, and identify a normal vector to the plane that you've constructed.
+\vspace{1in}  
+    
+    \begin{tcolorbox}
+
+     \begin{itemize}
+      \itemsep0em
+  
+    \item The \textbf{Taylor series to first order} of $f(x,y)$ about the point $(a,b)$ is $f(a,b) + f_x(a,b)(x-a) + f_y(a,b)(y-b).$  We can use this Taylor series to construct a \textbf{linear approximation} to $f(x,y)$ at $(a,b)$: $f(x,y) \approx f(a,b) + f_x(a,b)(x-a)+f_y(a,b)(y-b).$ 
+    \item The linear approximation is often written using the following notation: let $\Delta x = x - a$, $\Delta y = y - b$ and $\Delta f = f(x,y) - f(a,b)$.  We have $\Delta f \approx f_x(a,b) \Delta x + f_y(a,b)\Delta y$ from the linear approximation.
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\begin{itemize}
+\itemsep0em
+    \item The \textbf{differential} $df$ at a point $(a,b)$ is the linear function of $dx$ and $dy$ given by the formula $df = f_x(a,b)dx + f_y(a,b)dy$, or $df = \left.Df\right\vert_{(a,b)}\left[\begin{array}{c}dx \\ dy \end{array}\right]$.  The differential at a general point is written $df = f_xdx + f_y dy$ or $df = [Df]\left[\begin{array}{c}dx \\ dy \end{array}\right]$.
+\item Generalizing to higher dimensions, for $\mb{f}:\mathbb{R}^n\rightarrow \mathbb{R}^m$, $d\mb{f} = [Df] d\mb{x}$ where $d\mb{f} = \left[\begin{array}{c} df_1 \\ df_2 \\ \vdots \\ df_m \end{array}\right]$ and $d\mb{x} = \left[\begin{array}{c} dx_1 \\ dx_2 \\ \vdots \\ dx_n \end{array}\right]$.
+
+\end{itemize}
+\end{tcolorbox}
+
+\begin{questions}
+\item For the differentiable function $h(x)$, we are told that $h(600, 100) = 300$, $h_x(600,100) = 12,$ $h_y(600,100) = 4$  Use a linear approximation to estimate $h(601,97)$.
+\vspace{0.5in}
+
+\item For the (unknown) function $h(x,y)$ above, approximate the change in $h(600,100)$ when $x$ increases by $1$ and $y$ decreases by $3$.
+\vspace{0.5in}
+
+
+% \item Write down 
+
+\item Find the equation of the tangent plane to $x^2 y + \ln(xy) + z = 6$ at the point $(4,0.25,2)$.
+\vspace{1in}
+
+\item Construct a linear approximation for $f(x,y) = \sqrt{x^2+y^3}$ at the point $(1,2)$.  Use it to estimate $f(1.04, 1.98)$.
+\vspace{1in}
+
+\item T/F The local linearization of $f(x,y) = x^2+y^2$ at $(1,1)$ gives an overestimate of the value of $f(x,y)$ at the point $(1.04, 0.95)$.
+\vspace{1in}
+
+\item $f$ is a differentiable function with $f(2,1)=7$, $f_x(2,1) = -3$ and $f_y(2,1) = 4$.  Using a linear approximation, approximate the largest value of $f$ on or inside a circle of radius $0.1$ about the point $(2,1)$.  At what point in the domain does your approximation of $f$ achieve this value?
+\vspace{1in}
+
+
+\end{questions}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.2cm}
+
+\noindent\textbf{Level curves and surfaces: gradient vectors are perpendicular}
+
+\begin{tcolorbox}
+\begin{itemize}
+\itemsep0em
+\item Given a curve defined by $F(x,y) = c$ in $xy$-space, $DF = (F_x, F_y)$, and the gradient is $\nabla F = (DF)^T$.  At a point $(a,b)$ along the curve, the gradient is perpendicular to a tangent line to the curve at that point.  
+
+\item $\left\langle\left.F_x\right\vert_{(a,b)}, \left.F_y\right\vert_{(a,b)}\right\rangle\cdot\left\langle (x-a),(y-b)\right\rangle =0$ is an equation for the tangent line.
+
+\item Given a surface defined by $F(x,y,z) = c$ in $xyz$-space, $DF = (F_x, F_y, F_z)$.  The gradient is $\mb{\nabla}F = (DF)^T$.  At a point $(a,b,c)$, the gradient is normal to a tangent plane to the surface at that point. 
+
+\item $\left.F_x\right\vert_{(a,b,c)}(x-a)+\left.F_y\right\vert_{(a,b,c)}(y-b)+\left.F_z\right\vert_{(a,b,c)}(z-c)=0$ is an equation for the tangent plane.
+\end{itemize}
+\end{tcolorbox}
+
+\begin{enumerate}
+    \item Find a vector perpendicular to the curve $x^2+y^2 = 4$ when $x = 1$ and $y>0$.
+    \vspace{1in}
+    
+    \item Construct a tangent line to the curve at that point.
+    \vspace{1in}
+    
+    \item Find an equation of the tangent plane to the surface $2x^2-2xy^2+az = a$ at the point $(1,1,1)$.  For which value of $a$ (if any) does the tangent plane pass through the origin?
+    \vspace{1.5in}
+\end{enumerate}
+
+
+
+
+% Let $f:\mathbb{R}^n \rightarrow \mathbb{R}$ be a function where all of the input variables have the same units.  In this case, we can define the \textbf{directional derivative}, $f_{\mb{u}} = \mb{\nabla}f\cdot \hat{\mb{u}}$ where $\hat{\mb{u}}$ is a unit vector in the direction of $\mb{u}$.  %[Df] \hat{\mb{u}}$.
+% \includegraphics[width=\linewidth]{img/C11contour.jpg}
+% \noindent\textbf{Example.}  For each of the three contour plots above, decide whether the instantaneous rate of change of the function at the indicated point in the marked directions is positive, negative, or approximately zero.
+% \vfill 
+
+% \noindent\textbf{Example.} Find the directional derivative of $f(x,y) = 3x^2+ y^2$ at the point $(1,1)$ in the direction of the vector $2\vec i + \vec j$.
+% Use $f_{\vec u}(1,1) = \lim\limits_{h\rightarrow 0} \frac{1+hu_1,1+hu_2) - f(1,1)}{h}$ for your calculation.
+% \vfill
+
+% \noindent\textbf{Example.}
+% Use the Taylor series to first order to write $f(a+hu_1,b+hu_2)$ in terms of $f(a,b)$, $f_x(a,b)$ and $f_y(a,b)$ for $h$ small.  Use this to find an approximation for $\frac{f(a+hu_1,b+hu_2)-f(a,b)}{h}.$
+% \vfill
+
+% \noindent\textbf{Example.}
+% Find $f_{\vec u}(1,1)$ for $f(x,y) = 3x^2+y^2$ with $\vec u$ in the direction of $2\vec i + \vec j$.  Use $f_{\vec u}(1,1) = f_x(1,1)u_1 + f_y(1,1)u_2$ to compute this directional derivative.
+% \vfill
+
+% \noindent\textbf{Example.}
+% Express $f_{\vec u}(a,b)$ as the dot product of $\vec u$ with another vector that you construct.
+
+% \begin{tcolorbox}
+% \textbf{For your reference (more section 14.4):}
+% It can be convenient to write the directional derivative using dot product notation: \[f_{\vec u}(a,b) = f_x(a,b)u_1 +f_y(a,b) u_2 = \left(f_x(a,b)\vec i + f_y(a,b)\vec j\right)\cdot \vec u.\] When we wrote this, we created the vector $f_x(a,b)\vec i + f_y(a,b)\vec j$.  We'll call this vector the \emph{gradient vector}.  We denote it $\text{grad }f(a,b)$ or $\nabla f(a,b)$. \\
+
+% Using the geometric definition of the dot product, \[f_{\vec u}(a,b) = f_x u_1 + f_yu_2 =  \text{grad }f\cdot \vec u = \Vert \text{grad }f\Vert\Vert\vec u\Vert\cos\theta = \Vert \text{grad }f\Vert\cos\theta.\]
+% \end{tcolorbox}
+
+% \begin{center}
+% \includegraphics[width=2in]{img/C11tangent.png}
+% \includegraphics[width=2in]{img/C11gradient.png}
+
+% Left: tangent plane with cross-sections.  Right: contour plot and gradient vector.
+% \end{center}
+
+% \noindent\textbf{Example.}
+% Find the gradient vector of $f(x,y) = 4-x^2 - y^2$ at $(1,-1)$.  The tangent plane for the surface at this point is shown in gray on the plot to the left above.
+
+% Find the directional derivative along the directions
+% \begin{itemize}
+%     \item $\vec v = \vec i$
+%     \item $\vec v = \vec i + \vec j$
+%     \item $\vec v = -\vec i + \vec j$
+%     \item $\vec v = \vec i - \vec j$
+% \end{itemize}
+
+
+% \vfill
+
+
+
+\end{document}
